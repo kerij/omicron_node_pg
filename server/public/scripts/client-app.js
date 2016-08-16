@@ -16,8 +16,10 @@ function getBooks() {
       books.forEach(function (book) {
         var $el = $('<li></li>');
         $el.append('<strong>' + book.title + '</strong>');
-        $el.append(' <em>' + book.author + '</em');
+        $el.append(' <em>' + book.author + '</em>');
         $el.append(' <time>' + book.published + '</time>');
+        $el.append('  ' + book.edition);
+        $el.append('  ' + book.publisher);
         $('#book-list').append($el);
       });
     },
