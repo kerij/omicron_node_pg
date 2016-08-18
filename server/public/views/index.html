@@ -42,13 +42,27 @@
 
         <div class="form-group">
           <label for="genre">Genre:</label>
-          <input type="text" id="genre" name="genre"  class="form-control"/>
+          <select name="genre">
+            <option value="nonfic">Non-Fiction</option>
+            <option value="realfic">Realistic Fiction</option>
+            <option value="scifi">Science Fiction</option>
+            <option value="ya">Young Adult</option>
+          </select>
         </div>
 
         <button id="book-submit" class="btn btn-default">Go</button>
       </form>
 
       <h2>Books</h2>
+      <form id="showGenre">
+        <select id="genreSelection">
+          <option value="nonfic">Non-Fiction</option>
+          <option value="realfic">Realistic Fiction</option>
+          <option value="scifi">Science Fiction</option>
+          <option value="ya">Young Adult</option>
+        </select>
+        <button id="chooseGenre" class="btn btn-default">Submit</button>
+      </form>
       <ul id="book-list">
 
       </ul>

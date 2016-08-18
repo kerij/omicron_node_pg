@@ -5,6 +5,7 @@ $(document).ready(function () {
   $('#book-submit').on('click', postBook);
   $('#book-list').on('click', '.update', putBook);
   $('#book-list').on('click', '.delete', deleteBook);
+  $('#chooseGenre').on('click', getGenre);
 });
 /**
  * Retrieve books from server and append to DOM
@@ -15,32 +16,34 @@ function getBooks() {
     url: '/books',
     success: function (books) {
       console.log('GET /books returns:', books);
-      books.forEach(function (book) {
-        var $el = $('<div></div>');
-        var bookProperties = ['title', 'author', 'published', 'genre'];
-        bookProperties.forEach(function (property){
-          var inputType = 'text';
-          if (property == 'published') {
-            // inputType = 'date';
-            // book[property] = new Date(book[property]);
-
-          }
-          var $input = $('<input type="text" id="' + property + '"name="' + property + '" />');
-          $input.val(book[property]);
-          $el.append($input);
-        })
-
-        $el.data('bookId', book.id)
-        $el.append('<button class="update">Update</button>');
-        $el.append('<button class="delete">Delete</button>');
-
-        $('#book-list').append($el);
-      });
+      appendBooks(books);
     },
 
     error: function (response) {
       console.log('GET /books fail. No books could be retrieved!');
     },
+  });
+}
+
+function appendBooks (books) {
+  books.forEach(function (book) {
+    var $el = $('<div></div>');
+    var bookProperties = ['title', 'author', 'published', 'genre'];
+    bookProperties.forEach(function (property){
+      var inputType = 'text';
+      if (property == 'published') {
+
+      }
+      var $input = $('<input type="text" id="' + property + '"name="' + property + '" />');
+      $input.val(book[property]);
+      $el.append($input);
+    })
+
+    $el.data('bookId', book.id)
+    $el.append('<button class="update">Update</button>');
+    $el.append('<button class="delete">Delete</button>');
+
+    $('#book-list').append($el);
   });
 }
 /**
@@ -54,7 +57,7 @@ function postBook() {
   $.each($('#book-form').serializeArray(), function (i, field) {
     book[field.name] = field.value;
   });
-
+  console.log(book);
   $.ajax({
     type: 'POST',
     url: '/books',
@@ -112,4 +115,25 @@ function deleteBook() {
       console.log('DELETE failed');
     }
   })
+}
+
+function getGenre() {
+  event.preventDefault();
+  var genreSelected = $('#genreSelection').val();
+  console.log(genreSelected);
+
+  $.ajax({
+    type: 'GET',
+    url: '/books/' + genreSelected,
+    data: genreSelected,
+    success: function(books) {
+      console.log('it went to the server', books);
+      $('#book-list').empty();
+      appendBooks(books);
+    },
+    error: function() {
+      console.log('did not work');
+    }
+  })
+
 }

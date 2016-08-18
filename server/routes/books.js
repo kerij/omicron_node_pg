@@ -101,4 +101,27 @@ router.delete('/:id', function (req, res) {
   });
 });
 
+router.get('/:genre', function (req, res) {
+  var genre = req.params.genre
+  console.log(genre);
+
+  pg.connect (connectionString, function (err, client, done) {
+    if (err) {
+      res.sendStatus(500);
+    }
+
+    client.query('SELECT * FROM books ' +
+                'WHERE genre = $1', [genre],
+                function (err, result) {
+                  done();
+
+                  if (err) {
+                    res.sendStatus(500);
+                  } else {
+                    res.send(result.rows);
+                  }
+                });
+  });
+});
+
 module.exports = router;
